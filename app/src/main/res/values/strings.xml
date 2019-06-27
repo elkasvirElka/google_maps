@@ -16,5 +16,11 @@
     <string name="menu_info">Информация</string>
     <string name="menu_support">Поддержка</string>
 
+    <string name="address">Адрес</string>
+    <string name="options">Опции</string>
+    <string name="change_address">Изменить адрес</string>
+    <string name="where">Куда?</string>
+    <string name="order">Заказать</string>
+
    <!-- <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCHig6bBRMbwaWVzXoBJp0P06VhrMeJ0UI</string>-->
 </resources>

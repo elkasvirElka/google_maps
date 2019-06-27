@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:id="@+id/taxi_info"
+                android:background="#F7F2F2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+            android:id="@+id/linearLayoutFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+        <EditText
+                android:id="@+id/TF_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.01"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:layout_toLeftOf="@+id/B_search"/>
+
+        <Button
+                android:id="@+id/B_search"
+                android:layout_width="154px"
+                android:layout_height="58px"
+                android:background="@drawable/shape_rounded_corners"
+                android:layout_alignBottom="@+id/TF_location"
+                android:layout_alignParentEnd="true"
+                android:textSize="8sp"
+                android:text="Подъезд"
+                android:layout_alignParentRight="true"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayoutTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutFrom"
+        android:weightSum="1">
+
+    <EditText
+            android:id="@+id/TF_locationTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1.01"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/B_search"/>
+
+
+        <ImageView
+                android:id="@+id/nav_support"
+                android:src="@drawable/plus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:layout_alignBottom="@+id/TF_locationTo"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+
+
+</LinearLayout>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@id/linearLayoutTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/options"
+            android:text="@string/options"
+            android:layout_marginBottom="340dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/options_value"
+            app:layout_constraintTop_toBottomOf="@id/options"
+            android:weightSum="1">
+
+        <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/options">
+
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Некурящий салон"/>
+
+
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Детское кресло"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/options"
+                android:weightSum="1">
+
+
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Провоз животных"/>
+
+
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Встреча с табличкой"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <GridLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/grid"
+                app:layout_constraintTop_toBottomOf="@id/options_value"
+    android:orientation="vertical">
+
+        <EditText
+                android:text="Такси “Сибирь” - 120р"
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:enabled="false"
+                android:textColor="@android:color/black"/>
+        <EditText
+                android:text="Такси “Сибирь” - 120р"
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:enabled="false"
+                android:textColor="@android:color/black"/>
+
+    </GridLayout>
+
+    <Button
+            android:layout_width="728px"
+            android:layout_height="100px"
+            app:layout_constraintTop_toBottomOf="@id/grid"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/shape_black_rounded_corners"
+            android:text="@string/order"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:layout_gravity="bottom|center_horizontal"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

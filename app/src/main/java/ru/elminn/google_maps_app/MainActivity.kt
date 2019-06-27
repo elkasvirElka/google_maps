@@ -1,14 +1,19 @@
 package ru.elminn.google_maps_app
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
@@ -20,10 +25,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -35,30 +42,23 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.io.IOException
 
 class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener,
     OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-GoogleApiClient.OnConnectionFailedListener,
+    GoogleApiClient.OnConnectionFailedListener,
     LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
 
-
-
+    @Volatile var polylines: ArrayList<Polyline> = ArrayList()
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-       // setSupportActionBar(toolbar)
+        // setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -67,6 +67,8 @@ GoogleApiClient.OnConnectionFailedListener,
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        var where = findViewById<Button>(R.id.where)
+        where.setOnClickListener{v -> onClick(v)}
         navView.setNavigationItemSelectedListener(this)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission()
@@ -84,7 +86,14 @@ GoogleApiClient.OnConnectionFailedListener,
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
+        var locationButton = mapFragment.view?.findViewById(2) as ImageView
+        locationButton.setImageResource(R.drawable.my_location_button)
+        var layoutParams =
+            locationButton.getLayoutParams() as RelativeLayout.LayoutParams
+        // position on right bottom
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        layoutParams.setMargins(0, 0, 30, 250)
     }
 
     override fun onBackPressed() {
@@ -116,11 +125,11 @@ GoogleApiClient.OnConnectionFailedListener,
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-              /*  val intent = Intent(this, MapsActivity::class.java).apply {}
-                startActivity(intent)*/
-              /*  val intent = Intent(this, MapsActivity::class.java)
-                startActivity(intent)*/
-                // Handle the camera action
+             //   Utils.addFragmentToActivity(supportFragmentManager, ProfileFragment(), R.id.drawer_layout)
+                supportFragmentManager!!.beginTransaction()
+                    .add(R.id.drawer_layout, ProfileFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
             R.id.nav_history -> {
 
@@ -172,7 +181,6 @@ GoogleApiClient.OnConnectionFailedListener,
         }
 
 
-
     private fun CheckGooglePlayServices(): Boolean {
         val googleAPI = GoogleApiAvailability.getInstance()
         val result = googleAPI.isGooglePlayServicesAvailable(this)
@@ -218,7 +226,11 @@ GoogleApiClient.OnConnectionFailedListener,
 
         mMap!!.setOnMarkerDragListener(this)
         mMap!!.setOnMarkerClickListener(this)
-
+        mMap!!.setOnMapClickListener { v ->
+            var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
+            fragment.visibility = View.GONE
+            findViewById<Button>(R.id.where).visibility = View.VISIBLE
+        }
     }
 
 
@@ -233,16 +245,26 @@ GoogleApiClient.OnConnectionFailedListener,
     }
 
     fun onClick(v: View) {
-        var dataTransfer = arrayOfNulls<Any>(2)
+        //   var dataTransfer = arrayOfNulls<Any>(2)
         var getNearbyPlacesData = GetNearbyPlacesData()
 
 
         when (v.id) {
+            R.id.where ->{
+                var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
+                if(fragment == null) {
+                    Utils.addFragmentToActivity(supportFragmentManager, TaxiInfoFragment(), R.id.my_container)
+                }else{
+                    fragment.visibility = View.VISIBLE
+                }
+                v.visibility = View.GONE
+            }
             R.id.B_search -> {
                 val tf_location = findViewById(R.id.TF_location) as EditText
                 val location = tf_location.text.toString()
                 var addressList: List<Address>? = null
                 val markerOptions = MarkerOptions()
+
                 Log.d("location = ", location)
 
                 if (location != "") {
@@ -266,52 +288,14 @@ GoogleApiClient.OnConnectionFailedListener,
 
                 }
             }
-            R.id.B_hospital -> {
-                mMap!!.clear()
-                val hospital = "hospital"
-                var url = getUrl(latitude, longitude, hospital)
 
-                dataTransfer[0] = mMap
-                dataTransfer[1] = url
 
-                getNearbyPlacesData.execute(dataTransfer)
-                Toast.makeText(this, "Showing Nearby Hospitals", Toast.LENGTH_LONG).show()
-            }
-
-            R.id.B_restaurant -> {
-                mMap!!.clear()
-                dataTransfer = arrayOfNulls(2)
-                val restaurant = "restaurant"
-                var url = getUrl(latitude, longitude, restaurant)
-                getNearbyPlacesData = GetNearbyPlacesData()
-                dataTransfer[0] = mMap
-                dataTransfer[1] = url
-
-                getNearbyPlacesData.execute(dataTransfer)
-                Toast.makeText(this, "Showing Nearby Hospitals", Toast.LENGTH_LONG).show()
-            }
-            R.id.B_school -> {
-                mMap!!.clear()
-                val school = "school"
-                dataTransfer = arrayOfNulls(2)
-                var url = getUrl(latitude, longitude, school)
-                getNearbyPlacesData = GetNearbyPlacesData()
-                dataTransfer[0] = mMap
-                dataTransfer[1] = url
-
-                getNearbyPlacesData.execute(dataTransfer)
-                Toast.makeText(this, "Showing Nearby Hospitals", Toast.LENGTH_LONG).show()
-            }
-
-            R.id.B_to -> {
-                dataTransfer = arrayOfNulls(3)
+         /*   R.id.B_to -> {
+                // dataTransfer = arrayOfNulls(3)
                 var url = directionsUrl
-                val getDirectionsData = GetDirectionsData()
-                dataTransfer[0] = mMap
-                dataTransfer[1] = url
-                dataTransfer[2] = LatLng(end_latitude, end_longitude)
-                getDirectionsData.execute(dataTransfer)
-            }
+                val getDirectionsData = GetDirectionsData(polylines)
+                getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
+            }*/
         }
     }
 
@@ -363,7 +347,7 @@ GoogleApiClient.OnConnectionFailedListener,
         markerOptions.position(latLng)
         markerOptions.draggable(true)
         markerOptions.title("Current Position")
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+        markerOptions.icon(bitmapDescriptorFromVector(R.drawable.ic_location))
         mCurrLocationMarker = mMap!!.addMarker(markerOptions)
 
         //move map camera
@@ -371,7 +355,7 @@ GoogleApiClient.OnConnectionFailedListener,
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(11f))
 
 
-        Toast.makeText(this, "Your Current Location", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Ваше текущее местоположение", Toast.LENGTH_LONG).show()
 
 
         //stop location updates
@@ -380,6 +364,19 @@ GoogleApiClient.OnConnectionFailedListener,
             Log.d("onLocationChanged", "Removing Location Updates")
         }
 
+    }
+
+    private fun bitmapDescriptorFromVector(@DrawableRes vectorDrawableResourceId: Int): BitmapDescriptor {
+        var vectorDrawable = ContextCompat.getDrawable(this, vectorDrawableResourceId)
+        vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable!!.getIntrinsicHeight())
+        var bitmap = Bitmap.createBitmap(
+            vectorDrawable.getIntrinsicWidth(),
+            vectorDrawable.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888
+        )
+        var canvas = Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
@@ -480,6 +477,10 @@ GoogleApiClient.OnConnectionFailedListener,
 
         Log.d("end_lat", "" + end_latitude)
         Log.d("end_lng", "" + end_longitude)
+
+        var url = directionsUrl
+        val getDirectionsData = GetDirectionsData(polylines)
+        var result = getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
     }
 
     companion object {

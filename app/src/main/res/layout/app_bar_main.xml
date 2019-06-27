@@ -3,124 +3,85 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_width="match_parent"
+            android:background="@android:color/transparent"
             android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@android:color/black"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:map="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/map"
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+              android:layout_width="match_parent"
+              android:layout_marginTop="50dp"
+              android:layout_height="match_parent"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentStart="true"
+              tools:context=".MainActivity"
+              android:layout_below="@+id/B_hospital"
+              android:layout_alignParentLeft="true"/>
+
+
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_dialog_email"/>
+            android:id="@+id/address"
+            android:text="@string/address"
+            android:layout_gravity="center"
+            android:layout_marginBottom="340dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_marginTop="50dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_address"
+            app:layout_anchor="@id/address"
+            app:layout_anchorGravity="bottom|center_horizontal"
+            android:textSize="14dp"
+            android:layout_gravity="center|bottom"
+            android:textColor="@android:color/black"/>
 
-        <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="1">
+    <Button
+            android:id="@+id/where"
+            android:layout_width="728px"
+            android:layout_height="100px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_white_rounded_corners"
+            android:text="@string/where"
+            android:textAllCaps="false"
+            android:layout_gravity="bottom|center_horizontal"/>
 
-            <EditText
-                    android:id="@+id/TF_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/B_search"
-                    android:layout_weight="1.01"
-                    android:ems="10"
-                    android:inputType="textPersonName" android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/B_search"/>
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                       android:layout_height="400dp"
+                                                       android:id="@+id/my_container"
+                                                       android:layout_gravity="bottom|center_horizontal"
+    />
 
-            <Button
-                    android:id="@+id/B_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/TF_location"
-                    android:layout_alignParentEnd="true"
-                    android:onClick="onClick"
-                    android:text="Search" android:layout_alignParentRight="true"/>
-
-
-        </LinearLayout>
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:map="http://schemas.android.com/apk/res-auto"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:id="@+id/map"
-                  android:name="com.google.android.gms.maps.SupportMapFragment"
-                  android:layout_width="match_parent"
-                  android:layout_height="300dp"
-                  android:layout_alignParentBottom="true"
-                  android:layout_alignParentStart="true"
-                  tools:context=".MainActivity"
-                  android:layout_below="@+id/B_hospital" android:layout_alignParentLeft="true"/>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-        </LinearLayout>
-
-        <Button
-                android:id="@+id/B_hospital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/linearLayout"
-                android:onClick="onClick"
-                android:text="Hospitals" android:layout_alignParentLeft="true"/>
-
-        <Button
-                android:id="@+id/B_restaurant"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
-                android:layout_toEndOf="@+id/B_hospital"
-                android:onClick="onClick"
-                android:text="Restaurants" android:layout_toRightOf="@+id/B_hospital"/>
-
-        <Button
-                android:id="@+id/B_school"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
-                android:layout_toEndOf="@+id/B_restaurant"
-                android:onClick="onClick"
-                android:text="Schools" android:layout_toRightOf="@+id/B_restaurant"/>
-
-        <Button
-                android:id="@+id/B_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/map"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/B_school"
-                android:onClick="onClick"
-                android:text="To" android:layout_marginLeft="16dp" android:layout_toRightOf="@+id/B_school"/>
-
-    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
