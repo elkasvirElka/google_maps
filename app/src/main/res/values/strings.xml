@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">google_maps_app</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_history">История поездок</string>
+    <string name="menu_lovely_addr">Любимые адреса</string>
+    <string name="menu_payment">Способ оплаты</string>
+    <string name="menu_taxi_service">Службы такси</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_info">Информация</string>
+    <string name="menu_support">Поддержка</string>
+
+   <!-- <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCHig6bBRMbwaWVzXoBJp0P06VhrMeJ0UI</string>-->
+</resources>
