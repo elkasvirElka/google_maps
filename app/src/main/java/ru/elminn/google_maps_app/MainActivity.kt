@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -38,12 +39,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import ru.elminn.google_maps_app.utils.PreferenceHelper
 import java.io.IOException
 
 class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener,
-    OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener,
-    LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
+        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
 
     @Volatile
     var polylines: ArrayList<Polyline> = ArrayList()
@@ -53,21 +55,27 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val menu: Button = findViewById(R.id.menu)
+
+        PreferenceHelper.getInstance().init(applicationContext)
         // setSupportActionBar(toolbar)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        menu.setOnClickListener {
+            drawerLayout.openDrawer(Gravity.LEFT)
+        }
 
         var where = findViewById<Button>(R.id.where)
         where.setOnClickListener { v -> onClick(v) }
 
+        var economy = findViewById<Button>(R.id.economy)
+        var business = findViewById<Button>(R.id.business)
+        var comfort = findViewById<Button>(R.id.comfort)
 
+        economy.setOnClickListener { v -> onClick(v) }
+        business.setOnClickListener { v -> onClick(v) }
+        comfort.setOnClickListener { v -> onClick(v) }
 
         navView.setNavigationItemSelectedListener(this)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -84,21 +92,21 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+                .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         var locationButton = mapFragment.view?.findViewById(2) as ImageView
         locationButton.setImageResource(R.drawable.my_location_button)
         var layoutParams =
-            locationButton.getLayoutParams() as RelativeLayout.LayoutParams
+                locationButton.getLayoutParams() as RelativeLayout.LayoutParams
 
         locationButton.setOnClickListener {
-            latitude = mCurrLocationMarker.latitude
-            longitude = mCurrLocationMarker.longitude
+            //latitude = mCurrLocationMarker.latitude
+            // longitude = mCurrLocationMarker.longitude
             if (end_latitude > 0 && end_longitude > 0) {
                 var url = directionsUrl
                 val getDirectionsData = GetDirectionsData(polylines)
 
-                    .execute(mMap, url, LatLng(end_latitude, end_longitude))
+                        .execute(mMap, url, LatLng(end_latitude, end_longitude))
             }
         }
         // position on right bottom
@@ -138,9 +146,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             R.id.nav_profile -> {
                 //   Utils.addFragmentToActivity(supportFragmentManager, ProfileFragment(), R.id.drawer_layout)
                 supportFragmentManager!!.beginTransaction()
-                    .add(R.id.drawer_layout, ProfileFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
+                        .add(R.id.drawer_layout, ProfileFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
             }
             R.id.nav_history -> {
 
@@ -198,8 +206,8 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(
-                    this, result,
-                    0
+                        this, result,
+                        0
                 ).show()
             }
             return false
@@ -223,9 +231,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         //Initialize Google Play Services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) === PackageManager.PERMISSION_GRANTED
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    ) === PackageManager.PERMISSION_GRANTED
             ) {
                 buildGoogleApiClient()
                 mMap!!.isMyLocationEnabled = true
@@ -239,7 +247,11 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         mMap!!.setOnMarkerClickListener(this)
         mMap!!.setOnMapClickListener { v ->
             var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
-            fragment.visibility = View.GONE
+            var taxi_mode = findViewById<LinearLayout>(R.id.taxi_mode)
+            if (fragment != null){
+                fragment.visibility = View.GONE
+                taxi_mode.visibility = View.GONE
+            }
             findViewById<Button>(R.id.where).visibility = View.VISIBLE
         }
     }
@@ -248,10 +260,10 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     @Synchronized
     protected fun buildGoogleApiClient() {
         mGoogleApiClient = GoogleApiClient.Builder(this)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API)
-            .build()
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
         mGoogleApiClient!!.connect()
     }
 
@@ -261,13 +273,27 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
 
         when (v.id) {
+
+            R.id.economy,
+            R.id.comfort,
+            R.id.business -> {
+                var economy = findViewById<Button>(R.id.economy)
+                var comfort = findViewById<Button>(R.id.comfort)
+                var business = findViewById<Button>(R.id.business)
+                economy.setBackgroundColor(resources.getColor(R.color.button_taxi_mode))
+                comfort.setBackgroundColor(resources.getColor(R.color.button_taxi_mode))
+                business.setBackgroundColor(resources.getColor(R.color.button_taxi_mode))
+                (v as Button).setBackgroundColor(resources.getColor(R.color.button_taxi_selected_mode))
+            }
             R.id.where -> {
                 var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
+                var taxi_mode = findViewById<LinearLayout>(R.id.taxi_mode)
                 if (fragment == null) {
                     Utils.addFragmentToActivity(supportFragmentManager, TaxiInfoFragment(), R.id.my_container)
                 } else {
                     fragment.visibility = View.VISIBLE
                 }
+                taxi_mode.visibility = View.VISIBLE
                 v.visibility = View.GONE
             }
             R.id.TF_locationTo -> {
@@ -380,9 +406,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         mLocationRequest.fastestInterval = 1000
         mLocationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) === PackageManager.PERMISSION_GRANTED
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) === PackageManager.PERMISSION_GRANTED
         ) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
         }
@@ -433,9 +459,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         var vectorDrawable = ContextCompat.getDrawable(this, vectorDrawableResourceId)
         vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable!!.getIntrinsicHeight())
         var bitmap = Bitmap.createBitmap(
-            vectorDrawable.getIntrinsicWidth(),
-            vectorDrawable.getIntrinsicHeight(),
-            Bitmap.Config.ARGB_8888
+                vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888
         )
         var canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
@@ -448,16 +474,16 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
     fun checkLocationPermission(): Boolean {
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) !== PackageManager.PERMISSION_GRANTED
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) !== PackageManager.PERMISSION_GRANTED
         ) {
 
             // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    )
             ) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
@@ -466,18 +492,18 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    MY_PERMISSIONS_REQUEST_LOCATION
+                        this,
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        MY_PERMISSIONS_REQUEST_LOCATION
                 )
 
 
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    MY_PERMISSIONS_REQUEST_LOCATION
+                        this,
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        MY_PERMISSIONS_REQUEST_LOCATION
                 )
             }
             return false
@@ -487,8 +513,8 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_LOCATION -> {
@@ -498,9 +524,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                     // permission was granted. Do the
                     // contacts-related task you need to do.
                     if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) === PackageManager.PERMISSION_GRANTED
+                                    this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                            ) === PackageManager.PERMISSION_GRANTED
                     ) {
 
                         if (mGoogleApiClient == null) {
@@ -543,7 +569,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
         var url = directionsUrl
         val getDirectionsData = GetDirectionsData(polylines)
-        var result = getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
+        getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
     }
 
     companion object {

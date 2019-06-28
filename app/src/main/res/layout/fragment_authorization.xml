@@ -17,6 +17,18 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="340dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@android:color/black"/>
+
     <LinearLayout
             android:id="@+id/phone"
             android:layout_width="match_parent"
@@ -108,7 +120,7 @@
                 android:layout_marginBottom="23dp"
                 android:background="@drawable/bg_vk"
                 android:foregroundGravity="center"
-                android:text="Вконтакте"
+                android:text="@string/vk"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="12dp"
@@ -121,7 +133,7 @@
                 android:layout_height="84px"
                 android:layout_marginBottom="23dp"
                 android:background="@drawable/bg_fb"
-                android:text="Facebook"
+                android:text="@string/facebook"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="12dp"/>
@@ -135,10 +147,25 @@
                 android:layout_marginBottom="23dp"
                 android:background="@drawable/bg_gl"
                 android:textAllCaps="false"
-                android:text="Google"
+                android:text="@string/google"
                 android:textColor="@android:color/white"
                 android:textSize="12dp"/>
 
     </LinearLayout>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="294px"
+        android:layout_height="84px"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/bg_gl"
+        android:textAllCaps="false"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@android:color/white"
+        android:textSize="12dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

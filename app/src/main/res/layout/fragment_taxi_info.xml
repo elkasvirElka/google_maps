@@ -69,10 +69,10 @@
             app:layout_constraintTop_toBottomOf="@id/linearLayoutTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/options"
             android:text="@string/options"
-            android:layout_marginBottom="340dp"
+            android:layout_marginBottom="10dp"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
@@ -136,21 +136,34 @@
         <EditText
                 android:text="Такси “Сибирь” - 120р"
                 android:layout_width="match_parent"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:enabled="false"
                 android:textColor="@android:color/black"/>
         <EditText
-                android:text="Такси “Сибирь” - 120р"
-                android:layout_width="match_parent"
-                android:textSize="16sp"
-                android:enabled="false"
-                android:textColor="@android:color/black"/>
+            android:text="ООО “Скартель” - 183 руб"
+            android:layout_width="match_parent"
+            android:textSize="14sp"
+            android:enabled="false"
+            android:textColor="@android:color/black"/>
+        <EditText
+            android:text="АО “Сбертакс” - 290 руб."
+            android:layout_width="match_parent"
+            android:textSize="14sp"
+            android:enabled="false"
+            android:textColor="@android:color/black"/>
+        <EditText
+            android:text="АО “Сбертакс” - 290 руб."
+            android:layout_width="match_parent"
+            android:textSize="14sp"
+            android:enabled="false"
+            android:textColor="@android:color/black"/>
 
     </GridLayout>
 
     <Button
             android:layout_width="728px"
             android:layout_height="100px"
+        android:id="@+id/order_taxi"
             app:layout_constraintTop_toBottomOf="@id/grid"
             android:layout_alignParentBottom="true"
             app:layout_constraintBottom_toBottomOf="parent"
