@@ -42,16 +42,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:background="@drawable/shape_edit"
                 android:hint="+7"
-                android:inputType="phone"
-                android:layout_marginRight="32dp"/>
+                android:inputType="phone"/>
 
 
     </LinearLayout>
-
 
     <LinearLayout
             android:id="@+id/password"
@@ -62,33 +61,83 @@
             android:weightSum="1">
 
         <TextView
-                android:layout_width="468px"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="24dp"
                 android:textColor="@android:color/black"
                 android:textSize="18dp"
-                android:text="@string/language"
+                android:text="@string/password"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-        <Spinner
-                android:id="@+id/spinner_city"
+        <EditText
+                android:id="@+id/password_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:spinnerMode="dialog"
-                android:backgroundTint="@color/colorPrimary"
-                android:entries="@array/d_language"
-                android:gravity="end"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="32dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_marginRight="27dp" />
+                android:background="@drawable/shape_edit"
+                android:inputType="textPassword"
+                android:layout_marginRight="32dp"/>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="46dp"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/vk"
+                android:layout_width="294px"
+                android:layout_height="84px"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="23dp"
+                android:background="@drawable/bg_vk"
+                android:foregroundGravity="center"
+                android:text="Вконтакте"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="12dp"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:ignore="VectorDrawableCompat"/>
+
+        <Button
+                android:id="@+id/fb"
+                android:layout_width="294px"
+                android:layout_height="84px"
+                android:layout_marginBottom="23dp"
+                android:background="@drawable/bg_fb"
+                android:text="Facebook"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="12dp"/>
+
+        <Button
+                android:id="@+id/classmates"
+                android:layout_width="294px"
+                android:layout_height="84px"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="23dp"
+                android:background="@drawable/bg_gl"
+                android:textAllCaps="false"
+                android:text="Google"
+                android:textColor="@android:color/white"
+                android:textSize="12dp"/>
 
     </LinearLayout>
 

@@ -2,26 +2,22 @@ package ru.elminn.google_maps_app
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.View
@@ -30,7 +26,6 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -43,7 +38,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import java.io.IOException
 
 class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -51,7 +45,10 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     GoogleApiClient.OnConnectionFailedListener,
     LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
 
-    @Volatile var polylines: ArrayList<Polyline> = ArrayList()
+    @Volatile
+    var polylines: ArrayList<Polyline> = ArrayList()
+    lateinit var marker: Marker
+    lateinit var markerFrom: Marker
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +65,10 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
         var where = findViewById<Button>(R.id.where)
-        where.setOnClickListener{v -> onClick(v)}
+        where.setOnClickListener { v -> onClick(v) }
+
+
+
         navView.setNavigationItemSelectedListener(this)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission()
@@ -90,6 +90,17 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         locationButton.setImageResource(R.drawable.my_location_button)
         var layoutParams =
             locationButton.getLayoutParams() as RelativeLayout.LayoutParams
+
+        locationButton.setOnClickListener {
+            latitude = mCurrLocationMarker.latitude
+            longitude = mCurrLocationMarker.longitude
+            if (end_latitude > 0 && end_longitude > 0) {
+                var url = directionsUrl
+                val getDirectionsData = GetDirectionsData(polylines)
+
+                    .execute(mMap, url, LatLng(end_latitude, end_longitude))
+            }
+        }
         // position on right bottom
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -125,7 +136,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-             //   Utils.addFragmentToActivity(supportFragmentManager, ProfileFragment(), R.id.drawer_layout)
+                //   Utils.addFragmentToActivity(supportFragmentManager, ProfileFragment(), R.id.drawer_layout)
                 supportFragmentManager!!.beginTransaction()
                     .add(R.id.drawer_layout, ProfileFragment.newInstance())
                     .addToBackStack(null)
@@ -250,17 +261,17 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
 
         when (v.id) {
-            R.id.where ->{
+            R.id.where -> {
                 var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
-                if(fragment == null) {
+                if (fragment == null) {
                     Utils.addFragmentToActivity(supportFragmentManager, TaxiInfoFragment(), R.id.my_container)
-                }else{
+                } else {
                     fragment.visibility = View.VISIBLE
                 }
                 v.visibility = View.GONE
             }
-            R.id.B_search -> {
-                val tf_location = findViewById(R.id.TF_location) as EditText
+            R.id.TF_locationTo -> {
+                val tf_location = v as EditText
                 val location = tf_location.text.toString()
                 var addressList: List<Address>? = null
                 val markerOptions = MarkerOptions()
@@ -276,26 +287,78 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                         e.printStackTrace()
                     }
 
-                    if (addressList != null) {
-                        for (i in addressList.indices) {
-                            val myAddress = addressList[i]
-                            val latLng = LatLng(myAddress.latitude, myAddress.longitude)
-                            markerOptions.position(latLng)
-                            mMap!!.addMarker(markerOptions)
-                            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+                    if (addressList != null && addressList.size > 0) {
+
+                        //for (i in addressList.indices) {
+                        var i = addressList.indices.first
+                        val myAddress = addressList[i]
+                        val latLng = LatLng(myAddress.latitude, myAddress.longitude)
+                        markerOptions.position(latLng)
+                        if (::marker.isInitialized)
+                            marker.remove()
+                        marker = mMap!!.addMarker(markerOptions)
+                        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+                        end_latitude = myAddress.latitude
+                        end_longitude = myAddress.longitude
+
+                        var url = directionsUrl
+                        val getDirectionsData = GetDirectionsData(polylines)
+                        getDirectionsData.execute(mMap, url, latLng)
+                    }
+
+
+                }
+            }
+            R.id.TF_location -> {
+                val tf_location = v as EditText
+                val location = tf_location.text.toString()
+                var addressList: List<Address>? = null
+                val markerOptions = MarkerOptions()
+
+                Log.d("location = ", location)
+
+                if (location != "") {
+                    val geocoder = Geocoder(this)
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 5)
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    if (addressList != null && addressList.size > 0) {
+
+                        //for (i in addressList.indices) {
+                        var i = addressList.indices.first
+                        val myAddress = addressList[i]
+                        val latLng = LatLng(myAddress.latitude, myAddress.longitude)
+                        markerOptions.position(latLng)
+                        if (::markerFrom.isInitialized)
+                            markerFrom.remove()
+                        markerFrom = mMap!!.addMarker(markerOptions)
+                        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+                        latitude = myAddress.latitude
+                        longitude = myAddress.longitude
+                        if (end_latitude > 0 && end_longitude > 0) {
+                            var url = directionsUrl
+                            val getDirectionsData = GetDirectionsData(polylines)
+                            getDirectionsData.execute(mMap, url, latLng)
                         }
                     }
+
 
                 }
             }
 
 
-         /*   R.id.B_to -> {
-                // dataTransfer = arrayOfNulls(3)
-                var url = directionsUrl
-                val getDirectionsData = GetDirectionsData(polylines)
-                getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
-            }*/
+            /*  R.id.TF_location -> {
+                  // dataTransfer = arrayOfNulls(3)
+                  var url = directionsUrl
+                  val getDirectionsData = GetDirectionsData(polylines)
+                  getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
+               }*/
         }
     }
 
