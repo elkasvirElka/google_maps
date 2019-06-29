@@ -57,7 +57,7 @@ class TaxiInfoFragment : Fragment() {
 
         orderTaxi.setOnClickListener{
 
-            if(PreferenceHelper.getInstance().getToken().isNullOrBlank()) {
+            if(PreferenceHelper.getInstance().getPassword().isNullOrBlank()) {
                 activity!!.supportFragmentManager!!.beginTransaction()
                         .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
                         .addToBackStack(null)

@@ -19,8 +19,8 @@ class ProfileFragment : Fragment() {
         var back = view.findViewById<ImageView>(R.id.back)
         back.setOnClickListener {activity!!.onBackPressed()}
         var number = view.findViewById<EditText>(R.id.number)
-        var token =  PreferenceHelper.getInstance().getToken()
-        number.setText(token)
+        var password =  PreferenceHelper.getInstance().getPassword()
+        number.setText(password)
 
         return view
 

@@ -20,11 +20,11 @@ class AuthorizationFragment : Fragment() {
         var back = view.findViewById<ImageView>(R.id.back)
         var save = view.findViewById<Button>(R.id.save)
         var number = view.findViewById<EditText>(R.id.number)
-       var token =  PreferenceHelper.getInstance().getToken()
-        number.setText(token)
+       var password =  PreferenceHelper.getInstance().getPassword()
+        number.setText(password)
         back.setOnClickListener {activity!!.onBackPressed()}
         save.setOnClickListener {
-            PreferenceHelper.getInstance().putToken(number.text.toString())
+            PreferenceHelper.getInstance().putPassword(number.text.toString())
             activity!!.onBackPressed()
         }
         return view

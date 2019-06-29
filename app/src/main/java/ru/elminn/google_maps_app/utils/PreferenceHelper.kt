@@ -23,12 +23,12 @@ class PreferenceHelper private constructor() {
             return mInstance as PreferenceHelper
         }
     }
-    fun putToken(token: String) {
+    fun putPassword(password: String) {
         mPreferences.edit().apply {
-            putString("TOKEN", token)
+            putString("password", password)
             apply()
         }
     }
 
-    fun getToken() = mPreferences.getString("TOKEN", "")
+    fun getPassword() = mPreferences.getString("password", "")
 }
