@@ -1,6 +1,7 @@
 *.iml
 .gradle
 app/.idea/*.xml
+app/.idea/libraries/*.xml
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -14,3 +15,7 @@ app/.idea/*.xml
 .externalNativeBuild
 app/.idea/caches/*.*
 app/gradle/wrapper/*.*
+*.apk
+app/release/*.*
+app/debug/*.*
+
