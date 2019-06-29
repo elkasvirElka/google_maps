@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.GridLayout
+import android.widget.GridView
 import androidx.fragment.app.Fragment
 import ru.elminn.google_maps_app.utils.PreferenceHelper
 
@@ -20,6 +22,7 @@ class TaxiInfoFragment : Fragment() {
         val locationFrom = view.findViewById<EditText>(R.id.TF_location)
         val locationTo = view.findViewById<EditText>(R.id.TF_locationTo)
         val orderTaxi = view.findViewById<Button>(R.id.order_taxi)
+        val grid = view.findViewById<GridLayout>(R.id.grid)
 
         locationFrom.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -38,6 +41,7 @@ class TaxiInfoFragment : Fragment() {
         })
         locationTo.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
+                grid.visibility = View.VISIBLE
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

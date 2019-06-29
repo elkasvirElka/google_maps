@@ -1,10 +1,9 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.utils
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import java.io.File

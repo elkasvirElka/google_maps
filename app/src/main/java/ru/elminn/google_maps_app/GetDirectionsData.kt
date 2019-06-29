@@ -39,6 +39,8 @@ class GetDirectionsData(polylines: ArrayList<Polyline>) : AsyncTask<Any, String,
 
         val directionsList: Array<String?>
         val parser = DataParser()
+        if(s.contains("ZERO_RESULTS"))
+            return
         directionsList = parser.parseDirections(s)
         displayDirection(directionsList)
     }

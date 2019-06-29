@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import ru.elminn.google_maps_app.utils.PreferenceHelper
 
 class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -17,6 +18,9 @@ class ProfileFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_profile, container, false)
         var back = view.findViewById<ImageView>(R.id.back)
         back.setOnClickListener {activity!!.onBackPressed()}
+        var number = view.findViewById<EditText>(R.id.number)
+        var token =  PreferenceHelper.getInstance().getToken()
+        number.setText(token)
 
         return view
 

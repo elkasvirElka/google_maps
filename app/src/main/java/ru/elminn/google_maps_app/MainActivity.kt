@@ -10,16 +10,12 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.widget.*
@@ -40,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import ru.elminn.google_maps_app.utils.PreferenceHelper
+import ru.elminn.google_maps_app.utils.Utils
 import java.io.IOException
 
 class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener,

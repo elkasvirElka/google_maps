@@ -25,7 +25,7 @@ class PreferenceHelper private constructor() {
     }
     fun putToken(token: String) {
         mPreferences.edit().apply {
-            putString("TOKEN", "Token $token")
+            putString("TOKEN", token)
             apply()
         }
     }
