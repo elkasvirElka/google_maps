@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:id="@+id/taxi_info"
+                android:id="@+id/taxi_info"
                 android:background="#F7F2F2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
             android:id="@+id/linearLayoutFrom"
             android:layout_width="match_parent"
@@ -94,13 +100,15 @@
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Некурящий салон"/>
+                android:id="@+id/not_smoke"
+                    android:text="@string/not_smoke"/>
 
 
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Детское кресло"/>
+                android:id="@+id/child_place"
+                    android:text="@string/child_place"/>
 
         </LinearLayout>
 
@@ -115,65 +123,45 @@
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Провоз животных"/>
+                android:id="@+id/pet_place"
+                    android:text="@string/pet_place"/>
 
 
             <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Встреча с табличкой"/>
+                android:id="@+id/nameplace_meet"
+                    android:text="@string/nameplace_meet"/>
 
         </LinearLayout>
 
 
     </LinearLayout>
-    <GridLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/grid"
-        android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/options_value"
-    android:orientation="vertical">
 
-        <EditText
-                android:text="Такси “Сибирь” - 120р"
-                android:layout_width="match_parent"
-                android:textSize="14sp"
-                android:enabled="false"
-                android:textColor="@android:color/black"/>
-        <EditText
-            android:text="ООО “Скартель” - 183 руб"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:textSize="14sp"
-            android:enabled="false"
-            android:textColor="@android:color/black"/>
-        <EditText
-            android:text="АО “Сбертакс” - 290 руб."
-            android:layout_width="match_parent"
-            android:textSize="14sp"
-            android:enabled="false"
-            android:textColor="@android:color/black"/>
-        <EditText
-            android:text="АО “Сбертакс” - 290 руб."
-            android:layout_width="match_parent"
-            android:textSize="14sp"
-            android:enabled="false"
-            android:textColor="@android:color/black"/>
+            android:layout_height="wrap_content"
 
-    </GridLayout>
+            app:layout_constraintTop_toBottomOf="@id/options_value"
+            android:orientation="vertical"
+            />
 
     <Button
             android:layout_width="728px"
             android:layout_height="100px"
-        android:id="@+id/order_taxi"
-            app:layout_constraintTop_toBottomOf="@id/grid"
+            android:id="@+id/order_taxi"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view"
             android:layout_alignParentBottom="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/shape_black_rounded_corners"
             android:text="@string/order"
+        android:layout_marginTop="10dp"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:layout_gravity="bottom|center_horizontal"/>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

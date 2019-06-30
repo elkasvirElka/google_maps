@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#4BA3F1</color>
     <color name="button_taxi_mode">#B4B4B4</color>
     <color name="button_taxi_selected_mode">#F2F2F2</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>

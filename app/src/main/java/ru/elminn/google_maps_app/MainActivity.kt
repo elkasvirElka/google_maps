@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.fragment_taxi_info.*
 import ru.elminn.google_maps_app.utils.PreferenceHelper
 import ru.elminn.google_maps_app.utils.Utils
 import java.io.IOException
@@ -48,6 +49,12 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     var polylines: ArrayList<Polyline> = ArrayList()
     lateinit var marker: Marker
     lateinit var markerFrom: Marker
+    lateinit var taxi_mode : LinearLayout
+    lateinit var my_container : ConstraintLayout
+    lateinit var address : TextView
+    lateinit var changeAddr:TextView
+    lateinit  var where : Button
+    var currentAddress : String = ""
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +69,11 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         menu.setOnClickListener {
             drawerLayout.openDrawer(Gravity.LEFT)
         }
-
-        var where = findViewById<Button>(R.id.where)
+        taxi_mode = findViewById(R.id.taxi_mode)
+        my_container = findViewById(R.id.my_container)
+        address = findViewById(R.id.address)
+        changeAddr = findViewById(R.id.change_addr)
+        where = findViewById(R.id.where)
         where.setOnClickListener { v -> onClick(v) }
 
         var economy = findViewById<Button>(R.id.economy)
@@ -73,6 +83,8 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         economy.setOnClickListener { v -> onClick(v) }
         business.setOnClickListener { v -> onClick(v) }
         comfort.setOnClickListener { v -> onClick(v) }
+
+
 
         navView.setNavigationItemSelectedListener(this)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -141,11 +153,17 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-                //   Utils.addFragmentToActivity(supportFragmentManager, ProfileFragment(), R.id.drawer_layout)
-                supportFragmentManager!!.beginTransaction()
-                        .add(R.id.drawer_layout, ProfileFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit()
+                if(PreferenceHelper.getInstance().getPassword().isNullOrBlank()) {
+                    supportFragmentManager!!.beginTransaction()
+                            .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+                }else {
+                    supportFragmentManager!!.beginTransaction()
+                            .add(R.id.drawer_layout, ProfileFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit()
+                }
             }
             R.id.nav_history -> {
 
@@ -244,11 +262,13 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         mMap!!.setOnMarkerClickListener(this)
         mMap!!.setOnMapClickListener { v ->
             var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
-            var taxi_mode = findViewById<LinearLayout>(R.id.taxi_mode)
+
             if (fragment != null){
                 fragment.visibility = View.GONE
-                taxi_mode.visibility = View.GONE
             }
+            changeAddr.visibility = View.VISIBLE
+            address.visibility = View.VISIBLE
+            my_container.visibility = View.GONE
             findViewById<Button>(R.id.where).visibility = View.VISIBLE
         }
     }
@@ -284,13 +304,16 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             }
             R.id.where -> {
                 var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
-                var taxi_mode = findViewById<LinearLayout>(R.id.taxi_mode)
+                my_container.visibility = View.VISIBLE
                 if (fragment == null) {
                     Utils.addFragmentToActivity(supportFragmentManager, TaxiInfoFragment(), R.id.my_container)
                 } else {
                     fragment.visibility = View.VISIBLE
                 }
                 taxi_mode.visibility = View.VISIBLE
+                taxi_mode.visibility = View.GONE
+                address.visibility = View.GONE
+                changeAddr.visibility = View.GONE
                 v.visibility = View.GONE
             }
             R.id.TF_locationTo -> {
@@ -428,6 +451,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         longitude = location.longitude
 
 
+
         val latLng = LatLng(location.latitude, location.longitude)
         val markerOptions = MarkerOptions()
         markerOptions.position(latLng)
@@ -490,7 +514,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(
                         this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         MY_PERMISSIONS_REQUEST_LOCATION
                 )
 
@@ -499,7 +523,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(
                         this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         MY_PERMISSIONS_REQUEST_LOCATION
                 )
             }

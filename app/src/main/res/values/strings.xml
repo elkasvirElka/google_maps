@@ -33,10 +33,21 @@
     <string name="facebook">Facebook</string>
     <string name="vk">Вконтакте</string>
     <string name="save">Сохранить</string>
+    <string name="nameplace_meet">Встреча с табличкой</string>
+    <string name="pet_place">Провоз животных</string>
+    <string name="child_place">Детское кресло</string>
+    <string name="not_smoke">Некурящий салон</string>
 
     <string-array name="d_language">
         <item>Русский</item>
         <item>Английский</item>
     </string-array>
+
+    <string-array name="d_taxi">
+    <item>Такси “Сибирь” - 120р</item>
+    <item>ООО “Скартель” - 183 руб</item>
+        <item>АО “Сбертакс” - 290 руб.</item>
+        <item>АО “Сбертакс” - 320 руб.</item>
+</string-array>
     <!-- <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCHig6bBRMbwaWVzXoBJp0P06VhrMeJ0UI</string>-->
 </resources>

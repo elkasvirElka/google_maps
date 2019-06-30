@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:clickable="true"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    tools:context=".MainActivity">
+
+
+    <include layout="@layout/content_main" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            map:layout_constraintBottom_toTopOf="@id/my_container"
+            map:layout_constraintTop_toTopOf= "parent"
+            tools:context=".MainActivity" />
 
-    <include layout="@layout/content_main"/>
-
-
-
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:map="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/map"
-              android:name="com.google.android.gms.maps.SupportMapFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_alignParentBottom="true"
-              android:layout_alignParentStart="true"
-              tools:context=".MainActivity"
-              android:layout_alignParentLeft="true"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_container"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/menu"
@@ -33,91 +44,92 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/ic_menu"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false" />
+
     <LinearLayout
         android:id="@+id/taxi_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_gravity="center|top"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
         <Button
             android:id="@+id/economy"
             android:layout_width="200px"
             android:layout_height="134px"
             android:background="@color/button_taxi_selected_mode"
             android:text="@string/economy"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
+
         <Button
             android:id="@+id/business"
             android:layout_width="200px"
             android:layout_height="134px"
             android:background="@color/button_taxi_mode"
             android:text="@string/economy"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
+
         <Button
             android:id="@+id/comfort"
             android:layout_width="200px"
             android:layout_height="134px"
             android:background="@color/button_taxi_mode"
             android:text="@string/comfort"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
     </LinearLayout>
-    <Button
-    android:id="@+id/gift"
-    android:layout_width="134px"
-    android:layout_height="134px"
-    android:layout_alignParentBottom="true"
-    android:layout_centerInParent="true"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginTop="10dp"
-    android:background="@drawable/gift"
-    android:textAllCaps="false"
-        android:layout_gravity="right"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/address"
-            android:text="@string/address"
-            android:layout_gravity="center"
-            android:layout_marginBottom="340dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/change_address"
-            app:layout_anchor="@id/address"
-            app:layout_anchorGravity="bottom|center_horizontal"
-            android:textSize="14dp"
-            android:layout_gravity="center|bottom"
-            android:textColor="@android:color/black"/>
 
     <Button
-            android:id="@+id/where"
-            android:layout_width="728px"
-            android:layout_height="100px"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/shape_white_rounded_corners"
-            android:text="@string/where"
-            android:textAllCaps="false"
-            android:layout_gravity="bottom|center_horizontal"/>
+        android:id="@+id/gift"
+        android:layout_width="134px"
+        android:layout_height="134px"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="right"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gift"
+        android:textAllCaps="false" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:layout_height="400dp"
-                                                       android:id="@+id/my_container"
-                                                       android:layout_gravity="bottom|center_horizontal"
-    />
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="340dp"
+        android:text="@string/address"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/change_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:text="@string/change_address"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        app:layout_anchor="@id/address"
+        app:layout_anchorGravity="bottom|center_horizontal" />
+
+    <Button
+        android:id="@+id/where"
+        android:layout_width="728px"
+        android:layout_height="100px"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_white_rounded_corners"
+        android:text="@string/where"
+        android:textAllCaps="false" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
