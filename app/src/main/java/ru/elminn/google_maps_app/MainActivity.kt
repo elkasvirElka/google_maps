@@ -311,7 +311,6 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                     fragment.visibility = View.VISIBLE
                 }
                 taxi_mode.visibility = View.VISIBLE
-                taxi_mode.visibility = View.GONE
                 address.visibility = View.GONE
                 changeAddr.visibility = View.GONE
                 v.visibility = View.GONE

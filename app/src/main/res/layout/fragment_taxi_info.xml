@@ -1,167 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/taxi_info"
-                android:background="#F7F2F2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-<ScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/taxi_info"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toTopOf="parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <LinearLayout
-            android:id="@+id/linearLayoutFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+    android:layout_height="match_parent"
+    android:background="#F7F2F2">
 
-        <EditText
-                android:id="@+id/TF_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.01"
-                android:ems="10"
-                android:hint="@string/current_location"
-                android:inputType="textPersonName"
-                android:layout_toLeftOf="@+id/B_search"/>
-
-        <Button
-                android:id="@+id/B_search"
-                android:layout_width="154px"
-                android:layout_height="58px"
-                android:background="@drawable/shape_rounded_corners"
-                android:layout_alignBottom="@+id/TF_location"
-                android:layout_alignParentEnd="true"
-                android:textSize="8sp"
-                android:text="Подъезд"
-                android:layout_alignParentRight="true"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linearLayoutTo"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutFrom"
-        android:weightSum="1">
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-            android:id="@+id/TF_locationTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1.01"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/B_search"/>
-
-
-        <ImageView
-                android:id="@+id/nav_support"
-                android:src="@drawable/plus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"/>
-
-
-</LinearLayout>
-
-    <TextView
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:id="@+id/options"
-            android:text="@string/options"
-            android:layout_marginBottom="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
-
-    <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/options_value"
-            app:layout_constraintTop_toBottomOf="@id/options"
-            android:weightSum="1">
+            android:layout_height="match_parent">
 
-        <LinearLayout
-                android:layout_width="200dp"
+            <LinearLayout
+                android:id="@+id/linearLayoutFrom"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/TF_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/B_search"
+                    android:layout_weight="1.01"
+                    android:ems="10"
+                    android:hint="@string/current_location"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/B_search"
+                    android:layout_width="154px"
+                    android:layout_height="58px"
+                    android:layout_alignBottom="@+id/TF_location"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_rounded_corners"
+                    android:text="Подъезд"
+                    android:textSize="8sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutFrom">
+
+                <EditText
+                    android:id="@+id/TF_locationTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/B_search"
+                    android:layout_weight="1.01"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+
+                <ImageView
+                    android:id="@+id/nav_support"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:src="@drawable/plus" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/options"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutTo" />
+
+            <LinearLayout
+                android:id="@+id/options_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
                 app:layout_constraintTop_toBottomOf="@id/options">
 
-            <CheckBox
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                android:id="@+id/not_smoke"
-                    android:text="@string/not_smoke"/>
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/options">
+
+                    <CheckBox
+                        android:id="@+id/not_smoke"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/not_smoke" />
 
 
-            <CheckBox
-                    android:layout_width="wrap_content"
+                    <CheckBox
+                        android:id="@+id/child_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/child_place" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                android:id="@+id/child_place"
-                    android:text="@string/child_place"/>
+                    android:orientation="vertical"
+                    android:weightSum="1"
+                    app:layout_constraintTop_toBottomOf="@id/options">
 
-        </LinearLayout>
 
-        <LinearLayout
+                    <CheckBox
+                        android:id="@+id/pet_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pet_place" />
+
+
+                    <CheckBox
+                        android:id="@+id/nameplace_meet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nameplace_meet" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/options"
-                android:weightSum="1">
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/options_value" />
 
-
-            <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                android:id="@+id/pet_place"
-                    android:text="@string/pet_place"/>
-
-
-            <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                android:id="@+id/nameplace_meet"
-                    android:text="@string/nameplace_meet"/>
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            app:layout_constraintTop_toBottomOf="@id/options_value"
-            android:orientation="vertical"
-            />
-
-    <Button
-            android:layout_width="728px"
-            android:layout_height="100px"
-            android:id="@+id/order_taxi"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view"
-            android:layout_alignParentBottom="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/shape_black_rounded_corners"
-            android:text="@string/order"
-        android:layout_marginTop="10dp"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:layout_gravity="bottom|center_horizontal"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/order_taxi"
+                android:layout_width="728px"
+                android:layout_height="100px"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_black_rounded_corners"
+                android:text="@string/order"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
