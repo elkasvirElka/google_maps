@@ -266,6 +266,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             if (fragment != null){
                 fragment.visibility = View.GONE
             }
+            taxi_mode.visibility = View.GONE
             changeAddr.visibility = View.VISIBLE
             address.visibility = View.VISIBLE
             my_container.visibility = View.GONE
@@ -396,14 +397,6 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
                 }
             }
-
-
-            /*  R.id.TF_location -> {
-                  // dataTransfer = arrayOfNulls(3)
-                  var url = directionsUrl
-                  val getDirectionsData = GetDirectionsData(polylines)
-                  getDirectionsData.execute(mMap, url, LatLng(end_latitude, end_longitude))
-               }*/
         }
     }
 
