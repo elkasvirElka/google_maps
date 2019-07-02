@@ -25,18 +25,20 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import java.io.FileWriter
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TaxiInfoFragment : Fragment() {
 
     lateinit var adapter: SelectGroupsAdapter
     lateinit var mRecyclerView: RecyclerView
-    lateinit var list : ArrayList<String>
+    lateinit var list: ArrayList<String>
     var selectedTaxi: Int = 0
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -74,11 +76,11 @@ class TaxiInfoFragment : Fragment() {
                     {
                         val geocoder = Geocoder(activity)
                         var mainActivity = activity as MainActivity
-                        if(mainActivity.latitude > 0){
-                        val addr = geocoder.getFromLocation(mainActivity.latitude, mainActivity.longitude, 1)
-                        if (addr != null && addr.size > 0) {
-                            locationFrom.setText(addr[0].getAddressLine(0))
-                        }
+                        if (mainActivity.latitude > 0) {
+                            val addr = geocoder.getFromLocation(mainActivity.latitude, mainActivity.longitude, 1)
+                            if (addr != null && addr.size > 0) {
+                                locationFrom.setText(addr[0].getAddressLine(0))
+                            }
                         }
                     }, 1000)
         }
@@ -125,25 +127,33 @@ class TaxiInfoFragment : Fragment() {
                 var taxi = list[selectedTaxi]
                 val filename = "/taxi"
                 val path = Environment.getExternalStorageDirectory().toString()
-                var dataWrite =  taxi.plus(" - ").plus(LocalDateTime.now().toString()) + "\r\n"
-                dataWrite = dataWrite.plus("Маршрут:").plus(locationFrom.text).plus(" - ").plus(locationTo.text)+ "\r\n"
+                var dataWrite = taxi.plus(" - ")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    dataWrite = dataWrite.plus(LocalDateTime.now().toString()) + "\r\n"
+                } else {
+                    var date = Date()
+                    val formatter = SimpleDateFormat("MMM dd yyyy HH:mma")
+                    val dateForm: String = formatter.format(date)
+                    dataWrite = dataWrite.plus(dateForm) + "\r\n"
+                }
+                dataWrite = dataWrite.plus("Маршрут:").plus(locationFrom.text).plus(" - ").plus(locationTo.text) + "\r\n"
                 dataWrite = dataWrite.plus("Опции:").plus("\r\n")
 
-                if(pet_place.isChecked)
-                    dataWrite =  dataWrite.plus(getString(R.string.pet_place)).plus(";").plus("\r\n")
-                if(child_place.isChecked)
-                    dataWrite =  dataWrite.plus(getString(R.string.child_place)).plus(";").plus("\r\n")
-                if(not_smoke.isChecked)
+                if (pet_place.isChecked)
+                    dataWrite = dataWrite.plus(getString(R.string.pet_place)).plus(";").plus("\r\n")
+                if (child_place.isChecked)
+                    dataWrite = dataWrite.plus(getString(R.string.child_place)).plus(";").plus("\r\n")
+                if (not_smoke.isChecked)
                     dataWrite = dataWrite.plus(getString(R.string.not_smoke)).plus(";").plus("\r\n")
-                if(nameplace_meet.isChecked)
-                    dataWrite =dataWrite.plus(getString(R.string.nameplace_meet)).plus(";").plus("\r\n")
+                if (nameplace_meet.isChecked)
+                    dataWrite = dataWrite.plus(getString(R.string.nameplace_meet)).plus(";").plus("\r\n")
 
-                if(!(pet_place.isChecked ||child_place.isChecked ||not_smoke.isChecked ||nameplace_meet.isChecked))
-                    dataWrite =   dataWrite.plus(" Не выбрано").plus("\r\n")
+                if (!(pet_place.isChecked || child_place.isChecked || not_smoke.isChecked || nameplace_meet.isChecked))
+                    dataWrite = dataWrite.plus(" Не выбрано").plus("\r\n")
                 dataWrite = dataWrite.plus("\r\n")
 
                 try {
-                    val fw = FileWriter(path +filename, true)
+                    val fw = FileWriter(path + filename, true)
                     fw.write(dataWrite)
                     fw.close()
                     Toast.makeText(activity, "Такси заказано!", Toast.LENGTH_SHORT).show()
