@@ -23,8 +23,11 @@ import kotlin.concurrent.timer
 import android.os.Environment.getExternalStorageDirectory
 import android.widget.*
 import androidx.annotation.RequiresApi
+import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.FileWriter
 import java.io.IOException
+import java.nio.file.FileSystem
+import java.nio.file.FileSystems
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -39,6 +42,7 @@ class TaxiInfoFragment : Fragment() {
     var selectedTaxi: Int = 0
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,14 @@ class TaxiInfoFragment : Fragment() {
         val not_smoke = view.findViewById<CheckBox>(R.id.not_smoke)
         val nameplace_meet = view.findViewById<CheckBox>(R.id.nameplace_meet)
 
+/*
+        var res = FileSystems.getDefault().getFileStores()
+        for (store in FileSystems.getDefault().fileStores) {
+            val total = store.totalSpace / 1024
+            val used = (store.totalSpace - store.unallocatedSpace) / 1024
+            val avail = store.usableSpace / 1024
+            System.out.format("%-20s %12d %12d %12d%n", store, total, used, avail)
+        }*/
         mRecyclerView = view.findViewById(R.id.recycler_view)
         val mLayoutManager = LinearLayoutManager(context)
         mRecyclerView.layoutManager = mLayoutManager
@@ -118,7 +130,7 @@ class TaxiInfoFragment : Fragment() {
 
         orderTaxi.setOnClickListener {
 
-            if (PreferenceHelper.getInstance().getPassword().isNullOrBlank()) {
+            if (PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
                 activity!!.supportFragmentManager!!.beginTransaction()
                         .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
                         .addToBackStack(null)

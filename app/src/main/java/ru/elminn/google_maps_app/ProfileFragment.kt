@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -17,11 +18,16 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         var view = inflater.inflate(R.layout.fragment_profile, container, false)
         var back = view.findViewById<ImageView>(R.id.back)
+        var exit = view.findViewById<Button>(R.id.exit)
         back.setOnClickListener {activity!!.onBackPressed()}
         var number = view.findViewById<EditText>(R.id.number)
-        var password =  PreferenceHelper.getInstance().getPassword()
-        number.setText(password)
+        var numberValue =  PreferenceHelper.getInstance().getString(PreferenceHelper.number)
+        number.setText(numberValue)
 
+        exit.setOnClickListener{
+            PreferenceHelper.getInstance().clearAllString()
+            activity?.onBackPressed()
+        }
         return view
 
     }

@@ -92,4 +92,20 @@
 
     </LinearLayout>
 
+    <Button
+            android:id="@+id/exit"
+            android:layout_width="590px"
+            android:layout_height="84px"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="23dp"
+            android:background="@drawable/bg_gl"
+            android:textAllCaps="false"
+            android:text="@string/exit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@android:color/white"
+            android:textSize="12dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

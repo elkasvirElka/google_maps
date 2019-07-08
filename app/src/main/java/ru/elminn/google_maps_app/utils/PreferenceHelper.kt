@@ -13,6 +13,8 @@ class PreferenceHelper private constructor() {
 
     companion object {
         const val KEY_REGISTRATION_FINISHED_SUCCESSFULLY = "registration_finished_successfully"
+        const val password = "PASSWORD"
+        const val number = "NUMBER"
 
         private var mInstance: PreferenceHelper? = null
 
@@ -23,12 +25,22 @@ class PreferenceHelper private constructor() {
             return mInstance as PreferenceHelper
         }
     }
-    fun putPassword(password: String) {
+
+    fun putString(key: String, value: String) {
         mPreferences.edit().apply {
-            putString("password", password)
+            putString(key, value)
             apply()
         }
     }
 
-    fun getPassword() = mPreferences.getString("password", "")
+    fun getString(key: String) = mPreferences.getString(key, "")
+
+    fun clearAllString() {
+        mPreferences.edit().apply {
+            putString(number, "")
+            putString(password, "")
+            apply()
+        }
+    }
+
 }

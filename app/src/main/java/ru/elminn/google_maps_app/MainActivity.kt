@@ -153,7 +153,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-                if(PreferenceHelper.getInstance().getPassword().isNullOrBlank()) {
+                if(PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
                     supportFragmentManager!!.beginTransaction()
                             .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
                             .addToBackStack(null)
