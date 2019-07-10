@@ -35,26 +35,28 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_taxi_info.*
 import ru.elminn.google_maps_app.utils.PreferenceHelper
 import ru.elminn.google_maps_app.utils.Utils
 import java.io.IOException
 
 class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelectedListener,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
+    OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener,
+    LocationListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener {
 
     @Volatile
     var polylines: ArrayList<Polyline> = ArrayList()
     lateinit var marker: Marker
     lateinit var markerFrom: Marker
-    lateinit var taxi_mode : LinearLayout
-    lateinit var my_container : ConstraintLayout
-    lateinit var address : TextView
-    lateinit var changeAddr:TextView
-    lateinit  var where : Button
-    var currentAddress : String = ""
+    lateinit var taxi_mode: LinearLayout
+    lateinit var my_container: ConstraintLayout
+    lateinit var address: TextView
+    lateinit var changeAddr: TextView
+    lateinit var where: Button
+    lateinit var back: ImageView
+    var currentAddress: String = ""
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +76,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         address = findViewById(R.id.address)
         changeAddr = findViewById(R.id.change_addr)
         where = findViewById(R.id.where)
+        back = findViewById(R.id.back)
         where.setOnClickListener { v -> onClick(v) }
 
         var economy = findViewById<Button>(R.id.economy)
@@ -101,12 +104,12 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         var locationButton = mapFragment.view?.findViewById(2) as ImageView
         locationButton.setImageResource(R.drawable.my_location_button)
         var layoutParams =
-                locationButton.getLayoutParams() as RelativeLayout.LayoutParams
+            locationButton.getLayoutParams() as RelativeLayout.LayoutParams
 
         locationButton.setOnClickListener {
             //latitude = mCurrLocationMarker.latitude
@@ -115,7 +118,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                 var url = directionsUrl
                 val getDirectionsData = GetDirectionsData(polylines)
 
-                        .execute(mMap, url, LatLng(end_latitude, end_longitude))
+                    .execute(mMap, url, LatLng(end_latitude, end_longitude))
             }
         }
         // position on right bottom
@@ -153,16 +156,16 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_profile -> {
-                if(PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
+                if (PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
                     supportFragmentManager!!.beginTransaction()
-                            .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
-                            .addToBackStack(null)
-                            .commit()
-                }else {
+                        .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
+                } else {
                     supportFragmentManager!!.beginTransaction()
-                            .add(R.id.drawer_layout, ProfileFragment.newInstance())
-                            .addToBackStack(null)
-                            .commit()
+                        .add(R.id.drawer_layout, ProfileFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
             R.id.nav_history -> {
@@ -221,8 +224,8 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
                 googleAPI.getErrorDialog(
-                        this, result,
-                        0
+                    this, result,
+                    0
                 ).show()
             }
             return false
@@ -246,9 +249,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         //Initialize Google Play Services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                    ) === PackageManager.PERMISSION_GRANTED
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) === PackageManager.PERMISSION_GRANTED
             ) {
                 buildGoogleApiClient()
                 mMap!!.isMyLocationEnabled = true
@@ -260,17 +263,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
         mMap!!.setOnMarkerDragListener(this)
         mMap!!.setOnMarkerClickListener(this)
+        back.setOnClickListener { v -> onClick(v) }
         mMap!!.setOnMapClickListener { v ->
-            var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
-
-            if (fragment != null){
-                fragment.visibility = View.GONE
-            }
-            taxi_mode.visibility = View.GONE
-            changeAddr.visibility = View.VISIBLE
-            address.visibility = View.VISIBLE
-            my_container.visibility = View.GONE
-            findViewById<Button>(R.id.where).visibility = View.VISIBLE
+            onClick(back)
         }
     }
 
@@ -278,10 +273,10 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     @Synchronized
     protected fun buildGoogleApiClient() {
         mGoogleApiClient = GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build()
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build()
         mGoogleApiClient!!.connect()
     }
 
@@ -312,9 +307,11 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                     fragment.visibility = View.VISIBLE
                 }
                 taxi_mode.visibility = View.VISIBLE
+                back.visibility = View.VISIBLE
                 address.visibility = View.GONE
                 changeAddr.visibility = View.GONE
                 v.visibility = View.GONE
+                menu.visibility = View.GONE
             }
             R.id.TF_locationTo -> {
                 val tf_location = v as EditText
@@ -397,6 +394,20 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
                 }
             }
+            R.id.back -> {
+                var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
+
+                if (fragment != null) {
+                    fragment.visibility = View.GONE
+                }
+                changeAddr.visibility = View.VISIBLE
+                menu.visibility = View.VISIBLE
+                address.visibility = View.VISIBLE
+                findViewById<Button>(R.id.where).visibility = View.VISIBLE
+                taxi_mode.visibility = View.GONE
+                my_container.visibility = View.GONE
+                back.visibility = View.GONE
+            }
         }
     }
 
@@ -418,9 +429,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         mLocationRequest.fastestInterval = 1000
         mLocationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) === PackageManager.PERMISSION_GRANTED
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) === PackageManager.PERMISSION_GRANTED
         ) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
         }
@@ -443,7 +454,6 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         longitude = location.longitude
 
 
-
         val latLng = LatLng(location.latitude, location.longitude)
         val markerOptions = MarkerOptions()
         markerOptions.position(latLng)
@@ -457,7 +467,7 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(11f))
 
 
-        Toast.makeText(this, "Ваше текущее местоположение", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, getString(R.string.current_location), Toast.LENGTH_LONG).show()
 
 
         //stop location updates
@@ -472,9 +482,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
         var vectorDrawable = ContextCompat.getDrawable(this, vectorDrawableResourceId)
         vectorDrawable!!.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable!!.getIntrinsicHeight())
         var bitmap = Bitmap.createBitmap(
-                vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888
+            vectorDrawable.getIntrinsicWidth(),
+            vectorDrawable.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888
         )
         var canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
@@ -487,16 +497,16 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
     fun checkLocationPermission(): Boolean {
         if (ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) !== PackageManager.PERMISSION_GRANTED
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !== PackageManager.PERMISSION_GRANTED
         ) {
 
             // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                    )
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
             ) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
@@ -505,18 +515,18 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
 
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        MY_PERMISSIONS_REQUEST_LOCATION
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    MY_PERMISSIONS_REQUEST_LOCATION
                 )
 
 
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        MY_PERMISSIONS_REQUEST_LOCATION
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    MY_PERMISSIONS_REQUEST_LOCATION
                 )
             }
             return false
@@ -526,8 +536,8 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>, grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_LOCATION -> {
@@ -537,9 +547,9 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                     // permission was granted. Do the
                     // contacts-related task you need to do.
                     if (ContextCompat.checkSelfPermission(
-                                    this,
-                                    Manifest.permission.ACCESS_FINE_LOCATION
-                            ) === PackageManager.PERMISSION_GRANTED
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) === PackageManager.PERMISSION_GRANTED
                     ) {
 
                         if (mGoogleApiClient == null) {

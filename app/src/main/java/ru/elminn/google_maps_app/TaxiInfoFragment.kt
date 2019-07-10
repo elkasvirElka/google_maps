@@ -56,15 +56,7 @@ class TaxiInfoFragment : Fragment() {
         val pet_place = view.findViewById<CheckBox>(R.id.pet_place)
         val not_smoke = view.findViewById<CheckBox>(R.id.not_smoke)
         val nameplace_meet = view.findViewById<CheckBox>(R.id.nameplace_meet)
-
-/*
-        var res = FileSystems.getDefault().getFileStores()
-        for (store in FileSystems.getDefault().fileStores) {
-            val total = store.totalSpace / 1024
-            val used = (store.totalSpace - store.unallocatedSpace) / 1024
-            val avail = store.usableSpace / 1024
-            System.out.format("%-20s %12d %12d %12d%n", store, total, used, avail)
-        }*/
+        
         mRecyclerView = view.findViewById(R.id.recycler_view)
         val mLayoutManager = LinearLayoutManager(context)
         mRecyclerView.layoutManager = mLayoutManager

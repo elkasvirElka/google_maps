@@ -49,6 +49,18 @@
         android:background="@drawable/ic_menu"
         android:textAllCaps="false" />
 
+    <ImageView
+            android:id="@+id/back"
+            android:src="@drawable/back"
+            android:layout_width="134px"
+            android:layout_height="134px"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+
     <LinearLayout
         android:id="@+id/taxi_mode"
         android:layout_width="wrap_content"
@@ -70,7 +82,7 @@
             android:layout_width="200px"
             android:layout_height="134px"
             android:background="@color/button_taxi_mode"
-            android:text="@string/economy"
+            android:text="@string/business"
             android:textAllCaps="false" />
 
         <Button
