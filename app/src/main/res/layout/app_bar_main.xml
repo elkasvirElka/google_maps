@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
 
     <include layout="@layout/content_main" />
@@ -27,7 +27,7 @@
             android:layout_alignParentBottom="true"
             map:layout_constraintBottom_toTopOf="@id/my_container"
             map:layout_constraintTop_toTopOf= "parent"
-            tools:context=".MainActivity" />
+            tools:context=".ui.MainActivity" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/my_container"

@@ -1,4 +1,4 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -36,7 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_taxi_info.*
+import ru.elminn.google_maps_app.*
 import ru.elminn.google_maps_app.utils.PreferenceHelper
 import ru.elminn.google_maps_app.utils.Utils
 import java.io.IOException
@@ -158,12 +158,18 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
             R.id.nav_profile -> {
                 if (PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
                     supportFragmentManager!!.beginTransaction()
-                        .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
+                        .add(
+                            R.id.drawer_layout,
+                            AuthorizationFragment.newInstance()
+                        )
                         .addToBackStack(null)
                         .commit()
                 } else {
                     supportFragmentManager!!.beginTransaction()
-                        .add(R.id.drawer_layout, ProfileFragment.newInstance())
+                        .add(
+                            R.id.drawer_layout,
+                            ProfileFragment.newInstance()
+                        )
                         .addToBackStack(null)
                         .commit()
                 }
@@ -302,7 +308,10 @@ class MainActivity : FragmentActivity(), NavigationView.OnNavigationItemSelected
                 var fragment = findViewById<ConstraintLayout>(R.id.taxi_info)
                 my_container.visibility = View.VISIBLE
                 if (fragment == null) {
-                    Utils.addFragmentToActivity(supportFragmentManager, TaxiInfoFragment(), R.id.my_container)
+                    Utils.addFragmentToActivity(supportFragmentManager,
+                        TaxiInfoFragment(),
+                        R.id.my_container
+                    )
                 } else {
                     fragment.visibility = View.VISIBLE
                 }

@@ -1,4 +1,4 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.utils
 
 import android.util.Log
 import org.json.JSONArray

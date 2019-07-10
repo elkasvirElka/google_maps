@@ -7,6 +7,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import ru.elminn.google_maps_app.utils.DataParser
+import ru.elminn.google_maps_app.utils.DownloadUrl
 import java.io.IOException
 import java.util.HashMap
 

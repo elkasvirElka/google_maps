@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
+import ru.elminn.google_maps_app.utils.DataParser
+import ru.elminn.google_maps_app.utils.DownloadUrl
 import java.io.IOException
 
 class GetDirectionsData(polylines: ArrayList<Polyline>) : AsyncTask<Any, String, String>() {

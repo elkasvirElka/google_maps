@@ -1,8 +1,6 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import ru.elminn.google_maps_app.R
 import ru.elminn.google_maps_app.utils.PreferenceHelper
 
 class AuthorizationFragment : Fragment() {

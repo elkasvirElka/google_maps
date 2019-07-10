@@ -1,4 +1,4 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -18,16 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_taxi_info.*
 import ru.elminn.google_maps_app.utils.PreferenceHelper
-import java.io.File
-import kotlin.concurrent.timer
-import android.os.Environment.getExternalStorageDirectory
 import android.widget.*
 import androidx.annotation.RequiresApi
-import kotlinx.android.synthetic.main.fragment_profile.*
+import ru.elminn.google_maps_app.R
+import ru.elminn.google_maps_app.adapter.SelectGroupsAdapter
 import java.io.FileWriter
 import java.io.IOException
-import java.nio.file.FileSystem
-import java.nio.file.FileSystems
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -56,7 +52,7 @@ class TaxiInfoFragment : Fragment() {
         val pet_place = view.findViewById<CheckBox>(R.id.pet_place)
         val not_smoke = view.findViewById<CheckBox>(R.id.not_smoke)
         val nameplace_meet = view.findViewById<CheckBox>(R.id.nameplace_meet)
-        
+
         mRecyclerView = view.findViewById(R.id.recycler_view)
         val mLayoutManager = LinearLayoutManager(context)
         mRecyclerView.layoutManager = mLayoutManager
@@ -124,7 +120,10 @@ class TaxiInfoFragment : Fragment() {
 
             if (PreferenceHelper.getInstance().getString(PreferenceHelper.password).isNullOrBlank()) {
                 activity!!.supportFragmentManager!!.beginTransaction()
-                        .add(R.id.drawer_layout, AuthorizationFragment.newInstance())
+                        .add(
+                            R.id.drawer_layout,
+                            AuthorizationFragment.newInstance()
+                        )
                         .addToBackStack(null)
                         .commit()
             } else {

@@ -1,4 +1,4 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.utils
 
 import android.util.Log
 import java.io.BufferedReader
@@ -33,10 +33,6 @@ class DownloadUrl {
 
                 sb.append(line)
             } while (true)
-            /*while ((line = br.readLine()) != null) {
-                sb.append(line)
-
-            }*/
 
             data = sb.toString()
             Log.d("downloadUrl", data)

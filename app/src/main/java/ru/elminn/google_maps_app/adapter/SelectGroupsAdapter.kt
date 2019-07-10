@@ -1,13 +1,12 @@
-package ru.elminn.google_maps_app
+package ru.elminn.google_maps_app.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ru.elminn.google_maps_app.R
 
 class SelectGroupsAdapter : RecyclerView.Adapter<SelectGroupsAdapter.ViewHolder>() {
 
@@ -48,7 +47,7 @@ class SelectGroupsAdapter : RecyclerView.Adapter<SelectGroupsAdapter.ViewHolder>
     interface OnClickAdapterListener {
         fun onClickItem(position: Int)
     }
-    fun setListeners(listener:OnClickAdapterListener){
+    fun setListeners(listener: OnClickAdapterListener){
         mListener = listener
     }
 
